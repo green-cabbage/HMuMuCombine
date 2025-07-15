@@ -1,0 +1,69 @@
+#!/bin/sh
+# setup env -----------------------------------------------------------
+ulimit -s unlimited
+set -e
+cd /depot/cms/private/users/yun79/combine/CMSSW_14_1_0_pre4/src
+export SCRAM_ARCH=el8_amd64_gcc12
+source /cvmfs/cms.cern.ch/cmsset_default.sh
+eval `scramv1 runtime -sh`
+# slurm_dir=slurmJob_$1
+# slurm_path=/depot/cms/users/yun79/hig-19-006-datacards/ggH/HMuMuCombine/${slurm_dir}
+# mkdir -p ${slurm_path}
+# # cd /depot/cms/users/yun79/hig-19-006-datacards/ggH/HMuMuCombine/${slurm_dir}
+# cd /depot/cms/users/yun79/hig-19-006-datacards/ggH/HMuMuCombine/${slurm_dir}
+#-----------------------------------------------------------
+
+
+ntoys="10"
+nGeneratedToys="10"
+true_idx="1"
+out_idx="core"
+minStrat="0"
+random_seed=$1
+
+cat="all"
+
+slurm_dir=slurmJob_${1}_in${true_idx}_out${out_idx}
+slurm_path=/depot/cms/users/yun79/hig-19-006-datacards/ggH/HMuMuCombine/${slurm_dir}
+mkdir -p ${slurm_path}
+cd /depot/cms/users/yun79/hig-19-006-datacards/ggH/HMuMuCombine/${slurm_dir}
+# text2workspace.py -m 125 datacard_comb_sig_${cat}_ggh.txt 
+cp ../datacard_comb_sig_${cat}_ggh.root .
+echo "random_seed: ${random_seed}"
+echo "slurm_dir: ${slurm_dir}"
+
+combineTool.py datacard_comb_sig_${cat}_ggh.root -M GenerateOnly -m 125 --setParameters pdf_index_ggh=${true_idx} -t ${nGeneratedToys}  --expectSignal 1 --saveToys -m 125 --freezeParameters pdf_index_ggh --X-rtd MINIMIZER_MaxCalls=20000000000 -s ${random_seed}
+time(combineTool.py datacard_comb_sig_${cat}_ggh.root -M FitDiagnostics   -m 125 --toysFile higgsCombine.Test.GenerateOnly.mH125.${random_seed}.root   -t ${ntoys}  --expectSignal 1  --rMin -20 --rMax 20  --cminDefaultMinimizerStrategy=${minStrat}  --cminRunAllDiscreteCombinations --X-rtd MINIMIZER_MaxCalls=20000000000  --parallel 20 -n bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset)
+# python3 plot_bias_pull_fitDiagnostics.py --ntoys ${ntoys}  --in_file fitDiagnosticsbias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset.root --out_file bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset
+
+# cat="cat0"
+# # text2workspace.py -m 125 datacard_comb_sig_${cat}_ggh.txt 
+# combineTool.py datacard_comb_sig_${cat}_ggh.root -M GenerateOnly -m 125 --setParameters pdf_index_ggh=${true_idx} -t ${nGeneratedToys}  --expectSignal 1 --saveToys -m 125 --freezeParameters pdf_index_ggh --X-rtd MINIMIZER_MaxCalls=20000000000 
+# time(combineTool.py datacard_comb_sig_${cat}_ggh.root -M FitDiagnostics   -m 125 --toysFile higgsCombine.Test.GenerateOnly.mH125.${random_seed}.root   -t ${ntoys}  --expectSignal 1  --rMin -20 --rMax 20  --cminDefaultMinimizerStrategy=${minStrat}  --cminRunAllDiscreteCombinations --X-rtd MINIMIZER_MaxCalls=20000000000  --parallel 20 -n bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset)
+# python3 plot_bias_pull_fitDiagnostics.py --ntoys ${ntoys}  --in_file fitDiagnosticsbias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset.root --out_file bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset
+
+# cat="cat1"
+# # text2workspace.py -m 125 datacard_comb_sig_${cat}_ggh.txt 
+# combineTool.py datacard_comb_sig_${cat}_ggh.root -M GenerateOnly -m 125 --setParameters pdf_index_ggh=${true_idx} -t ${nGeneratedToys}  --expectSignal 1 --saveToys -m 125 --freezeParameters pdf_index_ggh --X-rtd MINIMIZER_MaxCalls=20000000000 
+# time(combineTool.py datacard_comb_sig_${cat}_ggh.root -M FitDiagnostics   -m 125 --toysFile higgsCombine.Test.GenerateOnly.mH125.${random_seed}.root   -t ${ntoys}  --expectSignal 1  --rMin -20 --rMax 20  --cminDefaultMinimizerStrategy=${minStrat}  --cminRunAllDiscreteCombinations --X-rtd MINIMIZER_MaxCalls=20000000000  --parallel 20 -n bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset)
+# python3 plot_bias_pull_fitDiagnostics.py --ntoys ${ntoys}  --in_file fitDiagnosticsbias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset.root --out_file bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset
+
+# cat="cat2"
+# # text2workspace.py -m 125 datacard_comb_sig_${cat}_ggh.txt 
+# combineTool.py datacard_comb_sig_${cat}_ggh.root -M GenerateOnly -m 125 --setParameters pdf_index_ggh=${true_idx} -t ${nGeneratedToys}  --expectSignal 1 --saveToys -m 125 --freezeParameters pdf_index_ggh --X-rtd MINIMIZER_MaxCalls=20000000000 
+# time(combineTool.py datacard_comb_sig_${cat}_ggh.root -M FitDiagnostics   -m 125 --toysFile higgsCombine.Test.GenerateOnly.mH125.${random_seed}.root   -t ${ntoys}  --expectSignal 1  --rMin -20 --rMax 20  --cminDefaultMinimizerStrategy=${minStrat}  --cminRunAllDiscreteCombinations --X-rtd MINIMIZER_MaxCalls=20000000000  --parallel 20 -n bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset)
+# python3 plot_bias_pull_fitDiagnostics.py --ntoys ${ntoys}  --in_file fitDiagnosticsbias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset.root --out_file bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset
+
+# cat="cat3"
+# # text2workspace.py -m 125 datacard_comb_sig_${cat}_ggh.txt 
+# combineTool.py datacard_comb_sig_${cat}_ggh.root -M GenerateOnly -m 125 --setParameters pdf_index_ggh=${true_idx} -t ${nGeneratedToys}  --expectSignal 1 --saveToys -m 125 --freezeParameters pdf_index_ggh --X-rtd MINIMIZER_MaxCalls=20000000000 
+# time(combineTool.py datacard_comb_sig_${cat}_ggh.root -M FitDiagnostics   -m 125 --toysFile higgsCombine.Test.GenerateOnly.mH125.${random_seed}.root   -t ${ntoys}  --expectSignal 1  --rMin -20 --rMax 20  --cminDefaultMinimizerStrategy=${minStrat}  --cminRunAllDiscreteCombinations --X-rtd MINIMIZER_MaxCalls=20000000000  --parallel 20 -n bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset)
+# python3 plot_bias_pull_fitDiagnostics.py --ntoys ${ntoys}  --in_file fitDiagnosticsbias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset.root --out_file bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset
+
+# cat="cat4"
+# # text2workspace.py -m 125 datacard_comb_sig_${cat}_ggh.txt 
+# combineTool.py datacard_comb_sig_${cat}_ggh.root -M GenerateOnly -m 125 --setParameters pdf_index_ggh=${true_idx} -t ${nGeneratedToys}  --expectSignal 1 --saveToys -m 125 --freezeParameters pdf_index_ggh --X-rtd MINIMIZER_MaxCalls=20000000000 
+# time(combineTool.py datacard_comb_sig_${cat}_ggh.root -M FitDiagnostics   -m 125 --toysFile higgsCombine.Test.GenerateOnly.mH125.${random_seed}.root   -t ${ntoys}  --expectSignal 1  --rMin -20 --rMax 20  --cminDefaultMinimizerStrategy=${minStrat}  --cminRunAllDiscreteCombinations --X-rtd MINIMIZER_MaxCalls=20000000000  --parallel 20 -n bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset)
+# python3 plot_bias_pull_fitDiagnostics.py --ntoys ${ntoys}  --in_file fitDiagnosticsbias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset.root --out_file bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset
+
+
