@@ -4,8 +4,8 @@
 #SBATCH --output=/depot/cms/users/yun79/hig-19-006-datacards/ggH/HMuMuCombine/coreFuncScan/slurm_log/slurm_combine_task_%A_%a.out
 #SBATCH --error=/depot/cms/users/yun79/hig-19-006-datacards/ggH/HMuMuCombine/coreFuncScan/slurm_log/slurm_combine_task_%A_%a.err
 #SBATCH --account=cms
-#SBATCH --array=1-2   
-# SBATCH --array=1-100   
+# SBATCH --array=1-2   
+#SBATCH --array=1-100   
 #SBATCH --ntasks=1                     # Number of tasks per job
 #SBATCH --cpus-per-task=1              # Number of CPUs per task
 #SBATCH --mem=3000                    # Memory per task

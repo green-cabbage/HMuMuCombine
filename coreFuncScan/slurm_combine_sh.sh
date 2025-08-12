@@ -14,8 +14,8 @@ eval `scramv1 runtime -sh`
 #-----------------------------------------------------------
 
 
-ntoys="10"
-nGeneratedToys="10"
+ntoys="20"
+nGeneratedToys="20"
 # true_idx="1"
 # out_idx="core"
 true_idx=$3
@@ -23,17 +23,18 @@ out_idx=$4
 minStrat="0"
 # Use arithmetic expansion to perform the modulo operation
 if (( $1 % 2 == 0 )); then
-  random_seed="$1${2:0:3}"
+  random_seed="$1${2:0:4}"
+  # random_seed="$1${2: -4}"
 else
-  random_seed="${2:0:3}$1"
+  # random_seed="${2:0:3}$1"
+  random_seed="$1${2: -4}"
 fi
 # random_seed=$1${$2:0:2}
 
 cat="all"
 
 slurm_dir=slurmJobs/slurmJob_in${true_idx}_out${out_idx}_${1}_${2}
-# slurm_path=/depot/cms/users/yun79/hig-19-006-datacards/ggH/HMuMuCombine/${slurm_dir}
-start_dir=/depot/cms/users/yun79/hig-19-006-datacards/ggH/HMuMuCombine/coreFuncScan
+start_dir=/depot/cms/users/yun79/hig-19-006-datacards/ggH/HMuMuCombine/coreFuncScan/
 slurm_path=${start_dir}/${slurm_dir}
 datacard_name="datacard_comb_sig_all_ggh.txt"
 ws_path="my_workspace"
@@ -45,10 +46,9 @@ cp -f ${datacard_name} ${slurm_path}
 cp -f -r ${ws_path} ${slurm_path}
 echo "slurm_path: ${slurm_path}"
 cd ${slurm_path}
-# text2workspace.py -m 125 datacard_comb_sig_${cat}_ggh.txt 
-# cp ../../datacard_comb_sig_${cat}_ggh.root .
-# echo "random_seed: ${random_seed}"
-# echo "slurm_dir: ${slurm_dir}"
+text2workspace.py -m 125 datacard_comb_sig_${cat}_ggh.txt 
+echo "random_seed: ${random_seed}"
+echo "slurm_dir: ${slurm_dir}"
 
-# combineTool.py datacard_comb_sig_${cat}_ggh.root -M GenerateOnly -m 125 --setParameters pdf_index_ggh=${true_idx} -t ${nGeneratedToys}  --expectSignal 1 --saveToys -m 125 --freezeParameters pdf_index_ggh --X-rtd MINIMIZER_MaxCalls=20000000000 -s ${random_seed}
-# time(combineTool.py datacard_comb_sig_${cat}_ggh.root -M FitDiagnostics   -m 125 --toysFile higgsCombine.Test.GenerateOnly.mH125.${random_seed}.root   -t ${ntoys}  --expectSignal 1  --rMin -20 --rMax 20  --cminDefaultMinimizerStrategy=${minStrat}  --cminRunAllDiscreteCombinations --X-rtd MINIMIZER_MaxCalls=20000000000 -n bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_minStrat${minStrat}_asimovDataset)
+combineTool.py datacard_comb_sig_${cat}_ggh.root -M GenerateOnly -m 125 --setParameters pdf_index_ggh=${true_idx} -t ${nGeneratedToys}  --expectSignal 1 --saveToys -m 125 --freezeParameters pdf_index_ggh --X-rtd MINIMIZER_MaxCalls=20000000000 -s ${random_seed}
+time(combineTool.py datacard_comb_sig_${cat}_ggh.root -M FitDiagnostics   -m 125 --toysFile higgsCombine.Test.GenerateOnly.mH125.${random_seed}.root   -t ${ntoys}  --expectSignal 1  --rMin -20 --rMax 20 --setParameters pdf_index_ggh=${out_idx} --freezeParameters pdf_index_ggh  --cminDefaultMinimizerStrategy=${minStrat}  --X-rtd MINIMIZER_MaxCalls=20000000000 -n bias_in${true_idx}_out${out_idx}_nToys${ntoys}_${cat}_asimovDataset)
