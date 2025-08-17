@@ -19,16 +19,22 @@ nGeneratedToys="10"
 true_idx="1"
 out_idx="core"
 minStrat="0"
-random_seed=$1
+# Use arithmetic expansion to perform the modulo operation
+if (( $1 % 2 == 0 )); then
+  random_seed="$1${2:0:3}"
+else
+  random_seed="${2:0:3}$1"
+fi
+# random_seed=$1${$2:0:2}
 
 cat="all"
 
-slurm_dir=slurmJob_${1}_in${true_idx}_out${out_idx}
+slurm_dir=slurmJobs/slurmJob_in${true_idx}_out${out_idx}_${1}_${2}
 slurm_path=/depot/cms/users/yun79/hig-19-006-datacards/ggH/HMuMuCombine/${slurm_dir}
 mkdir -p ${slurm_path}
 cd /depot/cms/users/yun79/hig-19-006-datacards/ggH/HMuMuCombine/${slurm_dir}
 # text2workspace.py -m 125 datacard_comb_sig_${cat}_ggh.txt 
-cp ../datacard_comb_sig_${cat}_ggh.root .
+cp ../../datacard_comb_sig_${cat}_ggh.root .
 echo "random_seed: ${random_seed}"
 echo "slurm_dir: ${slurm_dir}"
 

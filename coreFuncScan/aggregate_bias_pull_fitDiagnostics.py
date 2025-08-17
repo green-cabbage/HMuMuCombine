@@ -107,7 +107,11 @@ if __name__ == "__main__":
     df = pd.DataFrame(results, columns=["in_index", "out_index", "mean_bias"])
 
     print(df)
-    df.to_csv("mean_bias.csv")
+    df.to_csv("mean_bias_inIndex.csv")
+
+    df_outIndexSort = df.sort_values(by="out_index", ascending=True).reset_index(drop=True)
+    df_outIndexSort.to_csv("mean_bias_outIndex.csv")
+
 
     # args = parser.parse_args()
     # # N_toys = 1000
