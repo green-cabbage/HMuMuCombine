@@ -25,6 +25,9 @@ This would take lots of computing resources, so we use slurm. The script to use 
 sh slurm_wrapper.sh
 
 ```
-
+then extract the results via:
+```bash
+python aggregate_bias_pull_fitDiagnostics.py
+```
 
 
