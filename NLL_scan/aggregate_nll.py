@@ -33,12 +33,12 @@ def extractNLL(fname):
 
 cat_map = {
     0 : "BWZRedux",
-    1 : "Sum Exponential",
-    2 : "Powerlaw",
-    3 : "FEWZxBern",
-    4 : "LandauxBern",
-    5 : "BWZxBern",
-    6 : "BwzGamma",
+    1 : "BwzGamma",
+    2 : "BWZxBern",
+    3 : "sumExp",
+    4 : "PowerLaw",
+    5 : "FEWZxBern",
+    6 : "LandauxBern",
     "Envelope": "Envelope",
 }
 
@@ -57,7 +57,7 @@ if __name__ == "__main__":
         if ix == "Envelope":
             plt.plot(r_vals, NLL_vals, linestyle='--', color="black", label=label)
         else:
-            plt.plot(r_vals, NLL_vals, marker='o', linestyle='-',  label=label)
+            plt.plot(r_vals, NLL_vals, linestyle='-',  label=label)
         total_NLL_vals.extend(NLL_vals)
 
     min_nll = np.array(total_NLL_vals).min()
