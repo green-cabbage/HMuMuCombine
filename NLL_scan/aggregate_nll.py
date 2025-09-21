@@ -47,13 +47,17 @@ if __name__ == "__main__":
 
     cat_len = 7
     total_NLL_vals = []
-    categories = list(range(cat_len)) + ["Envelope"]
+    # categories = list(range(cat_len)) + ["Envelope"]
+    categories = list(range(cat_len)) 
     for ix in categories:
         fname = f"higgsCombinefixed_pdf_{ix}.MultiDimFit.mH125.root"
         # fname = f"Aug17_2025/higgsCombinefixed_pdf_{ix}.MultiDimFit.mH125.root"
+        print(fname)
         r_vals, NLL_vals = extractNLL(fname)
         # Plot
         label = cat_map[ix]
+        print(f"ix {ix} r_vals: {r_vals}")
+        print(f"ix {ix} NLL_vals: {NLL_vals}")
         if ix == "Envelope":
             plt.plot(r_vals, NLL_vals, linestyle='--', color="black", label=label)
         else:
@@ -63,7 +67,8 @@ if __name__ == "__main__":
     min_nll = np.array(total_NLL_vals).min()
     max_nll = np.array(total_NLL_vals).max()
     plt.legend()
-    plt.xlim(-1, 3)
+    plt.xlim(-5, 10)
+    # plt.xlim(-1, 3)
     plt.xlabel(r"$r$")
     plt.ylabel(r"2*(deltaNLL+nll+nll0)")
     plt.title("NLL scan of mutliple background core functions")
@@ -74,7 +79,14 @@ if __name__ == "__main__":
     plt.ylim(min_nll-1, min_nll+50)
     plt.savefig("CoreFuncs_nll_zoomed.pdf")
 
+    plt.ylim(max_nll-550, max_nll-450)
+    plt.savefig("CoreFuncs_nll_zoomed_mid.pdf")
+
+
     plt.ylim(max_nll-100, max_nll+10)
     plt.savefig("CoreFuncs_nll_zoomed_up.pdf")
+
+
+
     
     

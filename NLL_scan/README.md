@@ -20,3 +20,5 @@ Run
 ```bash
 python aggregate_nll.py
 ```
+
+NOTE: if the NLL curves looks jaggy, that could mean that that the fit parameter range is too large, and it would be fixed once the range is more constrained around the fit values.

@@ -311,6 +311,7 @@ outfile.WriteTObject(save_graph)
 outfile.Close()
 
 main_scan["graph"].GetYaxis().SetMaxDigits(900)
-main_scan["graph"].GetXaxis().SetRangeUser(-1,3)
+# main_scan["graph"].GetXaxis().SetRangeUser(-1,3)
+main_scan["graph"].GetXaxis().SetRangeUser(-5,10)
 canv.Print(".pdf")
 canv.Print(".png")
