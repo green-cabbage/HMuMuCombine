@@ -14,3 +14,10 @@ combineTool.py -M Impacts -d  datacard_comb_sig_all_ggh.root -m 125 --doFits --r
 combineTool.py -M Impacts -d datacard_comb_sig_all_ggh.root -m 125 -o impacts_allyears.json
 plotImpacts.py -i impacts_allyears.json -o impacts_allyears
 ```
+
+
+For plotting the combined NLL curve, do this:
+
+```
+sh nll.sh
+```
